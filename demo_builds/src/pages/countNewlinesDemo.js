@@ -12,6 +12,10 @@ function CountNewlinesDemo() {
 	const [checkedState, setCheckedState] = React.useState(true);
 	const [useGigaData, setUseGigaData] = React.useState(true);
 
+	//For giga dataset use "Files" tab at the bottom of this page and get a "Plate..." file
+	// gunzip it and get the folder and pass in the .sql file in the Extracted Features folder which
+	// is converted to a csv file http://gigadb.org/dataset/view/id/100351/
+	//For the per_object.csv use this link and just pass in the per_object.csv http://d1zymp9ayga15t.cloudfront.net/content/Examplezips/cpa_2.0_example.zip
 	const handleUpload = async (eventObject) => {
 		// upload a single file which is a csv
 		const csv_file = eventObject.target.files[0];
@@ -35,6 +39,11 @@ function CountNewlinesDemo() {
 					const timeFinished = performance.now();
 					console.log(`Newline parsing took ${timeFinished - timeBeforeParsingNewlines} milliseconds.`);
 					console.log(newLineIndices);
+					const diffs = new Array(newLineIndices.length - 1).fill(0);
+					for (var i = 0; i < newLineIndices.length - 1; i++) {
+						diffs[i] = newLineIndices[i] - newLineIndices[i + 1];
+					}
+					console.log(diffs);
 					return newLineIndices;
 				}
 				// javascript reads in byte chunks of a certain size each of which is a subset of the file
@@ -120,9 +129,8 @@ function CountNewlinesDemo() {
 	// I want to keep track of if the user wants to parse the giga data
 	const handleChange = function () {
 		setCheckedState(!checkedState);
-		if (checkedState) {
-			setUseGigaData(!useGigaData);
-		}
+		setUseGigaData(!useGigaData);
+
 		console.log(!checkedState);
 	};
 
