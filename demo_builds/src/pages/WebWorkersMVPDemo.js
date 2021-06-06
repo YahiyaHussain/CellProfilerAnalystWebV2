@@ -394,21 +394,10 @@ function TestUIMVP() {
 		var UUID = null;
 		let updateCanvasesListener = (event) => {
 			if (UUID == event.data.uuid) {
-				switch (event.data.action) {
-					case 'updateTrainingCanvases':
-						tfvis.show.history(trainingLossCanvasParentRef.current, event.data.trainLogs, [
-							...event.data.ticks.loss,
-							...event.data.ticks.accuracy,
-						]);
-						// tfvis.show.history(
-						// 	trainingAccuracyCanvasParentRef.current,
-						// 	event.data.trainLogs,
-
-						// );
-						break;
-					default:
-						console.log("didn't render bad action");
-				}
+				tfvis.show.history(trainingLossCanvasParentRef.current, event.data.trainLogs, [
+					...event.data.ticks.loss,
+					...event.data.ticks.accuracy,
+				]);
 			}
 		};
 
@@ -439,6 +428,10 @@ function TestUIMVP() {
 		return new Promise((resolve) => {
 			let selfDestructingEventHandler = (event) => {
 				if (event.data.uuid === UUID) {
+					// this UUID matches uniquely to my call so why waste
+					// cpu time on giving it to other callers to do the
+					// if check for the uuid
+					event.stopImmediatePropogation();
 					worker.removeEventListener('message', selfDestructingEventHandler);
 					resolve(event);
 				}
@@ -735,7 +728,7 @@ function TestUIMVP() {
 								<Dialog open={openFetchDropdown} onClose={() => handleCloseFetchDropDown(null)}>
 									<DialogTitle>
 										{/* <Typography variant="h3" align="center"> */}
-											Fetch By Image
+										Fetch By Image
 										{/* </Typography> */}
 									</DialogTitle>
 									<DialogContent>

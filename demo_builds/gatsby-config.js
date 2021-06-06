@@ -12,6 +12,14 @@ module.exports = {
 		// "gatsby-plugin-sharp",
 		// "gatsby-transformer-sharp",
 		{
+			resolve: `gatsby-plugin-typescript`,
+			options: {
+			  isTSX: true, // defaults to false
+			  jsxPragma: `jsx`, // defaults to "React"
+			  allExtensions: true, // defaults to false
+			},
+		  },
+		{
 			resolve: 'gatsby-source-filesystem',
 			options: {
 				name: 'images',
@@ -19,5 +27,17 @@ module.exports = {
 			},
 			__key: 'images',
 		},
+		{
+			resolve: "gatsby-plugin-eslint",
+			options: {
+			  test: /\.js$|\.jsx$|\.ts$|\.tsx$/,
+			  exclude: /(node_modules|.cache|public)/,
+			  stages: ["develop"],
+			  options: {
+				emitWarning: true,
+				failOnError: false,
+			  },
+			},
+		  }
 	],
 };
